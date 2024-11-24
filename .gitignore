@@ -1,0 +1,17 @@
+# Ignore virtual environments
+.venv/
+venv/
+.venv
+
+# Ignore PyCharm/IDEA project files
+.idea/
+
+# Ignore compiled Python files
+__pycache__/
+
+# Ignore environment files
+.env
+
+# Ignore large dependency files
+*.dll
+*.lib
