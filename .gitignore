@@ -9,10 +9,24 @@ venv/
 
 # Ignore compiled Python files
 __pycache__/
+--pycache__
+.pycache
+.__pycache__/
+pycache
+__pycache__
+.pychache
+.pycache/
+.__pychache__/
+.__pychache__
 
 # Ignore environment files
 .env
+env/
+.env/
+env
 
 # Ignore large dependency files
 *.dll
 *.lib
+*lib
+*dll
