@@ -8,8 +8,8 @@ from email.message import EmailMessage
 from decouple import config
 
 
-Email = "md.mahatabmahimn@gmail.com"
-Passkey= "My mom is best"
+Email = "Email Address"
+Passkey= "Passkey from Google Account"
 
 def find_my_ip():
     ip_address = requests.get('https://api.ipify.org?format=json').json()
