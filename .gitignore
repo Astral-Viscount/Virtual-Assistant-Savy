@@ -31,3 +31,8 @@ env
 *.lib
 *lib
 *dll
+
+# vs code
+.vscode
+.vscode/
+vscode/
