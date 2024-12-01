@@ -8,8 +8,8 @@ from email.message import EmailMessage
 from decouple import config
 from pywhatkit.core.core import send_message
 
-EMAIL = "md.mahatabmahimn@gmail.com"
-PASSKEY= "rycu blio cwki rwzm"
+EMAIL = "Email Address"
+PASSKEY= "Passkey from Google Account"
 
 def find_my_ip():
     ip_address = requests.get('https://api.ipify.org?format=json').json()
