@@ -83,7 +83,7 @@ def take_command():
 
 
 def get_weather(city):
-    API_KEY = "a890a280a26ee308371d266bdf1b63fd"  # OpenWeatherMap API key
+    API_KEY = "OpenWeatherMap API key"  # OpenWeatherMap API key
     BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
     try:
@@ -187,7 +187,7 @@ def fetch_movie_info():
 
 def calculate_or_plot(query):
     # WolframAlpha App ID
-    app_math_id = "YK8TKJ-HY2WL44XQP"
+    app_math_id = "# WolframAlpha App ID"
     client = wolframalpha.Client(app_math_id)
 
     # Determine if the query is for a graph or calculation
