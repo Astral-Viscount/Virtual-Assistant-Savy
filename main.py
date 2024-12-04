@@ -414,15 +414,6 @@ if __name__ == '__main__':
                 else:
                     speak("I couldn't understand your query. Please try again.")
 
-            elif "internet speed" in query:
-                wifi = speedtest.Speedtest()
-                upload_net = wifi.upload() / 1048576  # Megabyte = 1024*1024 Bytes
-                download_net = wifi.download() / 1048576
-                print("Your Internet's Upload Speed is", upload_net)
-                print("Your Internet's download speed is ", download_net)
-                speak(f"Your Internet's download speed is {download_net}")
-                speak(f"Your Internet's Upload speed is {upload_net}")
-
 
             else:
                 gemini_response = get_gemini_response(query)
