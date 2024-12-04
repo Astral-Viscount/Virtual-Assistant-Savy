@@ -1,4 +1,5 @@
 import requests
+import time
 import pyautogui
 import pyttsx3
 import speech_recognition as sr
@@ -11,15 +12,21 @@ from datetime import datetime
 from decouple import config
 from random import choice
 from conv import random_text
-from online import (find_my_ip, search_on_google, search_on_wikipedia, get_news, #weather_forecast,
+from online import (find_my_ip, search_on_google, search_on_wikipedia, get_news,
                     youtube_video, open_website, open_schoology, open_youtube, send_email)
 from PIL import Image
 from io import BytesIO
+import google.generativeai as genai
+import speedtest
 
+GEMINI_API_KEY = "AIzaSyAgJA4cunyPKNnrLUqLzRLXDH7BctjcExM"
+
+genai.configure(api_key = GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 engine = pyttsx3.init('sapi5')  # Microsoft Speech API
 engine.setProperty('volume', 1.3)  # volume of AI
-engine.setProperty('rate', 215)  # speak rate of AI
+engine.setProperty('rate', 200)  # speak rate of AI
 voices = engine.getProperty('voices')  # includes the voice modules of py library
 engine.setProperty('voice', voices[1].id)  # 1 for female and 0 for male voice
 USER = config('USER')
@@ -33,12 +40,12 @@ def speak(text):
 def greet_me():
     hour = datetime.now().hour
     if (hour >= 6) and (hour < 12):
-        speak(f"time") # Good morning {USER}
+        speak(f"Good morning {USER}")
     elif (hour >= 12) and (hour <= 16):
-        speak(f"time") # Good afternoon {USER}
+        speak(f"Good afternoon {USER}")
     elif (hour >= 16) and (hour < 19):
-        speak(f"time") # Good evening {USER}
-    speak(f"testing") # I am {HOSTNAME}. How may I assist you, {USER}
+        speak(f"Good evening {USER}")
+    speak(f"I am {HOSTNAME}. How may I assist you, {USER}")
 
 listening = False
 
@@ -59,8 +66,9 @@ def take_command():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.pause_threshold = 1  # wait for user statement
-        audio = r.listen(source)
+        r.pause_threshold = 2
+        r.energy_threshold = 300
+        audio = r.listen(source, timeout=10, phrase_time_limit=15)
 
     try:
         print("Recognizing...")
@@ -77,13 +85,13 @@ def take_command():
             exit()
 
     except Exception:
-        speak("repeat") # Sorry I couldn't understand. Could you please repeat that?
+        speak("Sorry I couldn't understand. Could you please repeat that?")
         query = 'None'
     return query
 
 
 def get_weather(city):
-    API_KEY = "OpenWeatherMap API key"  # OpenWeatherMap API key
+    API_KEY = "a890a280a26ee308371d266bdf1b63fd"  # OpenWeatherMap API key
     BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
     try:
@@ -187,12 +195,12 @@ def fetch_movie_info():
 
 def calculate_or_plot(query):
     # WolframAlpha App ID
-    app_math_id = "# WolframAlpha App ID"
+    app_math_id = "YK8TKJ-HY2WL44XQP"
     client = wolframalpha.Client(app_math_id)
 
     # Determine if the query is for a graph or calculation
-    if "draw" in query or "plot" in query:
-        query = query.replace("draw", "").replace("plot", "").strip()
+    if "draw" in query or "plot" in query or 'graph' in query:
+        query = query.replace("draw", "").replace("plot", "").replace("graph", "").strip()
         try:
             # WolframAlpha Simple API for plots
             url = f"http://api.wolframalpha.com/v1/simple?appid={app_math_id}&i={query}"
@@ -227,6 +235,14 @@ def calculate_or_plot(query):
             # General error handling
             speak("There was an error processing your query. Please try again.")
             print("Calculation Error:", e)
+
+def get_gemini_response(query):
+    try:
+        response = model.generate_content(query)
+        return response.text
+    except Exception as e:
+        print(f"Error getting Gemini response: {e}")
+        return "I'm sorry, I couldn't process that request."
 
 if __name__ == '__main__':
     greet_me()
@@ -267,7 +283,7 @@ if __name__ == '__main__':
 
             elif "open discord" in query:
                 speak("opening discord")
-                discord_path = "C:\\Users\\mdmah\\AppData\\Local\\Discord\\app-1.0.9168\\Discord.exe"
+                discord_path = "C:\\Users\\mdmah\\AppData\\Local\\Discord\\app-1.0.9173\\Discord.exe"
                 os.startfile(discord_path)
 
             elif "close discord" in query:
@@ -398,23 +414,20 @@ if __name__ == '__main__':
                 else:
                     speak("I couldn't understand your query. Please try again.")
 
-            elif "what is" in query or "who is" in query or "which is" in query:
-                app_ans_id = "YK8TKJ-AAQH9PXPQJ"
-                client = wolframalpha.Client(app_ans_id)
-                try:
-                    ind = query.lower().index("what is") if "what is" in query.lower() else \
-                          query.lower().index('who is') if 'who is' in query.lower() else \
-                          query.lower().index('which is') if 'which is' in query.lower() else None
+            elif "internet speed" in query:
+                wifi = speedtest.Speedtest()
+                upload_net = wifi.upload() / 1048576  # Megabyte = 1024*1024 Bytes
+                download_net = wifi.download() / 1048576
+                print("Your Internet's Upload Speed is", upload_net)
+                print("Your Internet's download speed is ", download_net)
+                speak(f"Your Internet's download speed is {download_net}")
+                speak(f"Your Internet's Upload speed is {upload_net}")
 
-                    if ind is not None:
-                        text = query.split()[ind + 2:]
-                        res = client.query(" ".join(text))
-                        ans_txt = next(res.results).text
-                        speak("The answer is " + ans_txt)
-                        print("The answer is " + ans_txt)
-                    else:
-                        speak("I couldn't find that. Please try again.")
-                except StopIteration:
-                    speak("I couldn't find that. Please try again.")
 
-            
+            else:
+                gemini_response = get_gemini_response(query)
+                gemini_response = gemini_response.replace("*", "")
+                if gemini_response and gemini_response != "I'm sorry, I couldn't process that request.":
+                    speak(gemini_response)
+                    print(gemini_response)
+
