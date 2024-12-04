@@ -12,7 +12,7 @@ EMAIL = "Email Address"
 PASSKEY= "Passkey from Google Account"
 
 def find_my_ip():
-    ip_address = requests.get('https://api.ipify.org?format=json').json()
+    ip_address = requests.get('URL?format=json').json()
     return ip_address["ip"]
 
 def search_on_wikipedia(query):
@@ -32,7 +32,7 @@ def open_youtube(url):
     webbrowser.open(url)
 
 def open_website(url):
-    browser_path = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"  # brave path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
+    browser_path = ""  # brave path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
     webbrowser.register('brave', None, webbrowser.BackgroundBrowser(browser_path))
     webbrowser.get('brave').open_new_tab(url)
 
@@ -57,8 +57,8 @@ def send_email(receive_add, subject, message):
 
 def get_news():
     news_headline = []
-    result = requests.get(f"https://newsapi.org/v2/top-headlines?country=nz&category=general&"
-                          f"apiKey=b02392178429467898b28831ac3402e8").json()
+    result = requests.get(f"URL&"
+                          f"apiKey=API").json()
                           # change the country to us if it nz doesn't have news
     articles = result["articles"]
     for article in articles:
