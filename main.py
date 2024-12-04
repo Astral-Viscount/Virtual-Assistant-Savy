@@ -19,7 +19,7 @@ from io import BytesIO
 import google.generativeai as genai
 import speedtest
 
-GEMINI_API_KEY = "AIzaSyAgJA4cunyPKNnrLUqLzRLXDH7BctjcExM"
+GEMINI_API_KEY = "Gemini API Key"
 
 genai.configure(api_key = GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
@@ -91,8 +91,8 @@ def take_command():
 
 
 def get_weather(city):
-    API_KEY = "a890a280a26ee308371d266bdf1b63fd"  # OpenWeatherMap API key
-    BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
+    API_KEY = "OpenWeatherMap API key"  # OpenWeatherMap API key
+    BASE_URL = "OpenWeatherMap API URL"
 
     try:
         # Make API request
@@ -195,7 +195,7 @@ def fetch_movie_info():
 
 def calculate_or_plot(query):
     # WolframAlpha App ID
-    app_math_id = "YK8TKJ-HY2WL44XQP"
+    app_math_id = "WolframAlpha App ID"
     client = wolframalpha.Client(app_math_id)
 
     # Determine if the query is for a graph or calculation
@@ -203,7 +203,7 @@ def calculate_or_plot(query):
         query = query.replace("draw", "").replace("plot", "").replace("graph", "").strip()
         try:
             # WolframAlpha Simple API for plots
-            url = f"http://api.wolframalpha.com/v1/simple?appid={app_math_id}&i={query}"
+            url = f"WolframAlpha App URL={app_math_id}&i={query}"
             response = requests.get(url)
 
             if response.status_code == 200:
@@ -274,7 +274,7 @@ if __name__ == '__main__':
 
             elif "open notepad" in query:
                 speak("opening notepad")
-                notepad_path = "C:\\mdmah\\New\\AppData\\Local\\Microsoft\\WindowsApps\\notepad.exe"
+                notepad_path = ""
                 os.startfile(notepad_path)
 
             elif "close notepad" in query:
@@ -283,7 +283,7 @@ if __name__ == '__main__':
 
             elif "open discord" in query:
                 speak("opening discord")
-                discord_path = "C:\\Users\\mdmah\\AppData\\Local\\Discord\\app-1.0.9173\\Discord.exe"
+                discord_path = ""
                 os.startfile(discord_path)
 
             elif "close discord" in query:
@@ -292,7 +292,7 @@ if __name__ == '__main__':
 
             elif "open vs code" in query:
                 speak("opening VS code")
-                vscode_path = "C:\\Users\\mdmah\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+                vscode_path = ""
                 os.startfile(vscode_path)
 
             elif "close vs code" in query:
@@ -301,7 +301,7 @@ if __name__ == '__main__':
 
             elif "open pycharm" in query:
                 speak("opening pycharm")
-                pycharm_path = "C:\\Program Files\\JetBrains\\PyCharm Community Edition 2024.2.4\\bin\\pycharm64.exe"
+                pycharm_path = ""
                 os.startfile(pycharm_path)
 
             elif "close pycharm" in query:
@@ -310,7 +310,7 @@ if __name__ == '__main__':
 
             elif "open brave" in query:
                 speak("opening brave")
-                brave_path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
+                brave_path = ""
                 os.startfile(brave_path)
 
             elif "close brave" in query:
@@ -319,7 +319,7 @@ if __name__ == '__main__':
 
             elif "open chrome" in query:
                 speak("opening chrome")
-                chrome_path = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+                chrome_path = ""
                 os.startfile(chrome_path)
 
             elif "close chrome" in query:
